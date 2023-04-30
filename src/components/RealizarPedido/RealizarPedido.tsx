@@ -9,8 +9,9 @@ import { VisualizarRecorrido } from "./EtapasPedido/VisualizarRecorrido/Visualiz
 import { PasarelaPago } from "./EtapasPedido/PasarelaPago/PasarelaPago";
 import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
 
-interface DatosEstados {
+export interface DatosEstados {
   itemABuscar: {
     descripcionItem?: string;
     imagenItem?: any;
@@ -31,16 +32,16 @@ interface DatosEstados {
     total?: number;
   };
   pasarelaPago: {
-    formaDePago?: string;
+    formaDePago?: number;
     montoEfectivo?: number;
     datosTarjeta?: {
-      numeroTarjeta: string;
-      fechaVencimiento: string;
-      codigoSeguridad: number;
+      numeroTarjeta?: string;
+      fechaVencimiento?: string;
+      codigoSeguridad?: number;
     };
     datosTitular?: {
-      nombreTitular: string;
-      apellidoTitular: string;
+      nombreTitular?: string;
+      apellidoTitular?: string;
     };
   };
   resumenFinal: {
@@ -125,7 +126,7 @@ export const RealizarPedido = () => {
     {
       idEtapa: 4,
       componente: (
-        <PasarelaPago
+        <FormatoPago
           datosEstados={datosEstados}
           setDatosEstados={setDatosEstados}
           avanzarEtapa={avanzarEtapa}
@@ -134,6 +135,16 @@ export const RealizarPedido = () => {
     },
     {
       idEtapa: 5,
+      componente: (
+        <PasarelaPago
+          datosEstados={datosEstados}
+          setDatosEstados={setDatosEstados}
+          avanzarEtapa={avanzarEtapa}
+        />
+      ),
+    },
+    {
+      idEtapa: 6,
       componente: (
         <ResumenFinal
           datosEstados={datosEstados}
@@ -173,7 +184,7 @@ export const RealizarPedido = () => {
         <ThemeProvider theme={theme}>
           <LinearProgress
             variant="determinate"
-            value={(etapaActual / 5) * 100}
+            value={(etapaActual / 6) * 100}
             color="primary"
           />
         </ThemeProvider>
@@ -216,7 +227,7 @@ export const RealizarPedido = () => {
             <div
               className={`multi-step-content ${activeClass}`}
               key={idEtapa}
-              style={{ display: "flex", width: "100%", position: "absolute" }}
+              style={{ width: "100%", position: "absolute" }}
             >
               {componente}
             </div>
