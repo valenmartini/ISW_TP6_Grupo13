@@ -59,7 +59,7 @@ export const FormatoPago = (props: EtapaProps) => {
     >
       {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <Container sx={{ marginBottom: "24pt" }}>
+          <Container sx={{ marginBottom: "24pt", maxWidth: "500px"  }} >
             <Typography
               align="center"
               style={{
@@ -71,7 +71,7 @@ export const FormatoPago = (props: EtapaProps) => {
               Elige tu metodo de pago
             </Typography>
 
-            <Grid container spacing={2} sx={{ marginTop: "24pt" }}>
+            <Grid container spacing={2} sx={{ marginTop: "24pt"}}>
               <Grid item xs={6}>
                 <Item
                   sx={{

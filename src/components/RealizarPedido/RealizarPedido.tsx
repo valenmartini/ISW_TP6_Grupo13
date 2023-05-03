@@ -155,21 +155,6 @@ export const RealizarPedido = () => {
     },
   ];
 
-  const transitionStyle = {
-    transition: "all 0.5s ease",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    opacity: 0,
-    transform: `translateX(${reverse ? "100%" : "-100%"})`,
-  };
-
-  const activeStyle = {
-    opacity: 1,
-    transform: "translateX(0)",
-  };
-
   const theme = createTheme({
     palette: {
       primary: {
