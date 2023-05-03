@@ -216,7 +216,7 @@ export const RealizarPedido = () => {
             <div
               className={`multi-step-content ${activeClass}`}
               key={idEtapa}
-              style={{ display: "flex", width: "100%", position: "absolute" }}
+              style={{width: "100%"}}
             >
               {componente}
             </div>
