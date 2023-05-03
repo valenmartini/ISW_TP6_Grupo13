@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ItemABuscar from "./EtapasPedido/ItemABuscar/ItemABuscar";
-import { DireccionComercio } from "./EtapasPedido/DireccionComercio/DireccionComercio";
+import DireccionComercio from "./EtapasPedido/DireccionComercio/DireccionComercio";
 import { DireccionEntrega } from "./EtapasPedido/DireccionEntrega/DireccionEntrega";
 import { Button, IconButton, LinearProgress } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
