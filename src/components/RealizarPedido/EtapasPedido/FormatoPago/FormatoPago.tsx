@@ -7,9 +7,11 @@ import {
   Grid,
   IconButton,
   Paper,
+  ThemeProvider,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  createTheme,
   styled,
 } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
@@ -31,6 +33,15 @@ export const FormatoPago = (props: EtapaProps) => {
     if (!error) null;
     if (formaPago >= 0) setError(false);
   }, [formaPago, error]);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#415D23",
+      },
+    },
+  });
+
   return (
     <Formik
       initialValues={{}}
@@ -46,7 +57,7 @@ export const FormatoPago = (props: EtapaProps) => {
         props.avanzarEtapa();
       }}
     >
-      {({handleSubmit}) => (
+      {({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
           <Container sx={{ marginBottom: "24pt" }}>
             <Typography
@@ -65,7 +76,7 @@ export const FormatoPago = (props: EtapaProps) => {
                 <Item
                   sx={{
                     border: `3px solid ${
-                      formaPago === 0 ? "#0E182C" : "white"
+                      formaPago === 0 ? "#415D23" : "white"
                     }`,
                     cursor: "pointer",
                   }}
@@ -75,8 +86,8 @@ export const FormatoPago = (props: EtapaProps) => {
                 >
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div
+                      className="green-background-color"
                       style={{
-                        backgroundColor: "#0E182C",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -106,7 +117,7 @@ export const FormatoPago = (props: EtapaProps) => {
                 <Item
                   sx={{
                     border: `3px solid ${
-                      formaPago === 1 ? "#0E182C" : "white"
+                      formaPago === 1 ? "#B8553A" : "white"
                     }`,
                     cursor: "pointer",
                   }}
@@ -116,8 +127,8 @@ export const FormatoPago = (props: EtapaProps) => {
                 >
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div
+                    className="red-background-color"
                       style={{
-                        backgroundColor: "#0E182C",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -151,18 +162,20 @@ export const FormatoPago = (props: EtapaProps) => {
                 paddingTop: "48pt",
               }}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                style={{
-                  backgroundColor: "#0E182C",
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-                endIcon={<ArrowForwardIcon />}
-              >
-                Siguiente
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                  }}
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Siguiente
+                </Button>
+              </ThemeProvider>
             </div>
           </Container>
         </form>

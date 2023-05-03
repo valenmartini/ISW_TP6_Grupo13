@@ -8,7 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { VisualizarRecorrido } from "./EtapasPedido/VisualizarRecorrido/VisualizarRecorrido";
 import { PasarelaPago } from "./EtapasPedido/PasarelaPago/PasarelaPago";
 import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
 
 export interface DatosEstados {
@@ -173,7 +173,7 @@ export const RealizarPedido = () => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#0E182C",
+        main: "#415D23",
       },
     },
   });
@@ -200,8 +200,8 @@ export const RealizarPedido = () => {
           }}
         >
           <div
+            className="light-background-color"
             style={{
-              backgroundColor: "#ede8e8",
               borderRadius: "50%",
               width: "26pt",
               height: "26pt",
@@ -211,11 +211,11 @@ export const RealizarPedido = () => {
               boxShadow: "12px 3px 19px -11px rgba(0,0,0,0.21)",
             }}
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon className="dark-color" />
           </div>
         </IconButton>
       </div>
-      <div style={{ position: "relative" }}>
+      <div className="multi-step-container" style={{ position: "relative" }}>
         {etapas.map(({ idEtapa, componente }) => {
           const activeClass =
             etapaActual === idEtapa
@@ -227,7 +227,7 @@ export const RealizarPedido = () => {
             <div
               className={`multi-step-content ${activeClass}`}
               key={idEtapa}
-              style={{ width: "100%", position: "absolute" }}
+              style={{ width: "100%" }}
             >
               {componente}
             </div>
@@ -244,7 +244,8 @@ export const RealizarPedido = () => {
         <Button
           onClick={avanzarEtapa}
           variant="contained"
-          style={{ backgroundColor: "#0E182C", textTransform: 'none', fontWeight: 'bold' }}
+          className="medium-background-color"
+          style={{ textTransform: "none", fontWeight: "bold" }}
           endIcon={<ArrowForwardIcon />}
         >
           Siguiente
