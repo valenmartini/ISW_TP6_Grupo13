@@ -42,6 +42,8 @@ export const ResumenFinal = (props: EtapaProps) => {
 
   const direccionComercioCompleta = direccionComercio.calle && direccionComercio.numero ? direccionComercio.calle + " " +  direccionComercio.numero : "";
   const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + direccionEntrega.numero : "";
+  const numeroTarjetaCodificado = pasarelaPago.formaDePago === '0' ? 'XXXX-XXXX-XXXX-' + pasarelaPago.datosTarjeta?.numeroTarjeta.slice(-4) : '';
+
 
   const [horaRecepcion, setHoraRecepcion] = useState('')
   const [time, setTime] = useState('00:00')
@@ -72,6 +74,9 @@ export const ResumenFinal = (props: EtapaProps) => {
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Direccion del Comercio" secondary={direccionComercioCompleta} />
+        {direccionComercio.referencia && (
+          <ListItemText primary="Referencia" secondary={direccionComercio.referencia} />
+        )}
       </ListItem>
       <Divider />
       <ListItem>
@@ -81,6 +86,18 @@ export const ResumenFinal = (props: EtapaProps) => {
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Direccion de Entrega" secondary={direccionEntregaCompleta} />
+        {direccionEntrega.referencia && (
+          <ListItemText primary="Referencia" secondary={direccionEntrega.referencia} />
+        )}
+      </ListItem>
+      <Divider />
+      <ListItem>        
+        <ListItemAvatar>
+          <Avatar>
+            <AccountBalanceIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Forma de Pago" secondary={pasarelaPago.formaDePago} />
       </ListItem>
       <Divider />
       <ListItem>
@@ -92,13 +109,42 @@ export const ResumenFinal = (props: EtapaProps) => {
         <ListItemText primary="Monto a Pagar" secondary={"$" + visualizarRecorrido.total} />
       </ListItem>
       <Divider />
-      <ListItem>        
+      {pasarelaPago.formaDePago === '0' && (
+        <React.Fragment>
+          <Divider />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <AttachMoneyIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Cantidad de Efectivo" secondary={"$" + pasarelaPago.montoEfectivo} />
+          </ListItem>
+          <Divider />
+        </React.Fragment>
+      )}
+      {pasarelaPago.formaDePago === '1' && (
+        <React.Fragment>
+          <Divider />
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <AttachMoneyIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Cantidad de Efectivo" secondary={numeroTarjetaCodificado} />
+          </ListItem>
+          <Divider />
+        </React.Fragment>
+      )}
+      <Divider />
+      <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <AccountBalanceIcon />
+            <AttachMoneyIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Forma de Pago" secondary={pasarelaPago.formaDePago} />
+        <ListItemText primary="Monto a Pagar" secondary={"$" + visualizarRecorrido.total} />
       </ListItem>
       <Divider />
       <ListItem>
