@@ -60,6 +60,14 @@ export interface EtapaProps {
   avanzarEtapa: any;
 }
 
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#415D23",
+    },
+  },
+});
+
 export const RealizarPedido = () => {
   const [etapaActual, setEtapaActual] = useState<number>(0);
   const [reverse, setReverse] = useState(false);
@@ -155,13 +163,7 @@ export const RealizarPedido = () => {
     },
   ];
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#415D23",
-      },
-    },
-  });
+
 
   return (
     <div>

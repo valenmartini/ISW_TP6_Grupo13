@@ -50,6 +50,8 @@ export const FormatoPago = (props: EtapaProps) => {
           setError(true);
           return;
         }
+        console.log(formaPago);
+        
         props.setDatosEstados((prev: DatosEstados) => {
           prev.pasarelaPago.formaDePago = formaPago;
           return prev;
