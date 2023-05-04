@@ -78,7 +78,7 @@ export const PagoEfectivo = ({
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth style={{ marginTop: "12pt" }}>
-                  <InputLabel htmlFor="cantidad-cash">
+                  <InputLabel htmlFor="cantidad-cash" error={touched.montoEfectivo && Boolean(errors.montoEfectivo)}>
                     Cantidad en efectivo
                   </InputLabel>
                   <OutlinedInput
