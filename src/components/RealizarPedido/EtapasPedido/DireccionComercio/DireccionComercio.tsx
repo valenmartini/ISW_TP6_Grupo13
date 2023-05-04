@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  Button,
-} from '@material-ui/core';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, makeStyles } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { EtapaProps } from '../../RealizarPedido';
 
 const schema = yup.object().shape({
   ciudad: yup.string().required('La ciudad es obligatoria'),
@@ -20,24 +13,11 @@ const schema = yup.object().shape({
     .required('El número es obligatorio'),
 });
 
-const useStyles = makeStyles((theme: { spacing: (arg0: number) => any; }) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  textField: {
-    margin: theme.spacing(1),
-    width: '25ch',
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-}));
 
-function DireccionComercio() {
-  const classes = useStyles();
+function DireccionComercio(props: EtapaProps) {
+  
   const [ciudad, setCiudad] = useState('');
-  const handleChangeCiudad = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChangeCiudad = (event: any) => {
     setCiudad(event.target.value as string);
   };
 
@@ -55,9 +35,10 @@ function DireccionComercio() {
   });
 
   return (
+    
     <form onSubmit={formik.handleSubmit}>
       <h2>Indica la dirección de tu comercio</h2>
-      <FormControl className={classes.formControl}>
+      <FormControl >
         <InputLabel id="ciudad-label">Ciudad</InputLabel>
         <Select
           labelId="ciudad-label"
@@ -67,7 +48,8 @@ function DireccionComercio() {
           onChange={handleChangeCiudad}
         >
           <MenuItem value={'Córdoba'}>Córdoba</MenuItem>
-          <MenuItem value={'Rosario'}>Rosario</MenuItem>
+          <MenuItem value={'San Fransisco'}>San Fransisco</MenuItem>
+          <MenuItem value={'Villa Carlos Paz'}>Villa Carlos Paz</MenuItem>
         </Select>
       </FormControl>
       {formik.errors.ciudad && formik.touched.ciudad && (
@@ -78,7 +60,6 @@ function DireccionComercio() {
         id="calle"
         name="calle"
         label="Calle"
-        className={classes.textField}
         value={formik.values.calle}
         onChange={formik.handleChange}
       />
@@ -91,7 +72,6 @@ function DireccionComercio() {
         name="numero"
         label="Número"
         type="number"
-        className={classes.textField}
         value={formik.values.numero}
         onChange={formik.handleChange}
       />
@@ -103,7 +83,6 @@ function DireccionComercio() {
         id="referencia"
         name="referencia"
         label="Referencia"
-        className={classes.textField}
         value={formik.values.referencia}
         onChange={formik.handleChange}
       />
@@ -112,7 +91,6 @@ function DireccionComercio() {
         variant="contained"
         color="primary"
         type="submit"
-        className={classes.button}
       >
         Enviar
       </Button>
