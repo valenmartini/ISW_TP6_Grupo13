@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
@@ -19,11 +20,18 @@ const schema = yup.object().shape({
   calle: yup.string().required("La calle es obligatoria"),
   numero: yup
     .number()
+    .min(1, "No puede ingresar un numero no positivo")
     .typeError("El número debe ser un valor numérico")
     .required("El número es obligatorio"),
 });
 
-export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEstados, tipo }: any) => {
+export const DomicilioForm = ({
+  titulo,
+  avanzarEtapa,
+  datosEstados,
+  setDatosEstados,
+  tipo,
+}: any) => {
   const [ciudad, setCiudad] = useState("");
   const handleChangeCiudad = (event: any) => {
     setCiudad(event.target.value as string);
@@ -39,21 +47,21 @@ export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEsta
     validationSchema: schema,
     onSubmit: (values) => {
       console.log(values);
-      setDatosEstados((previo: DatosEstados)=> {
-        if (tipo=="Comercio"){
-          previo.direccionComercio.ciudad=values.ciudad
-          previo.direccionComercio.calle=values.calle
-          previo.direccionComercio.numero=Number(values.numero)
-          previo.direccionComercio.referencia=values.referencia
+      setDatosEstados((previo: DatosEstados) => {
+        if (tipo == "Comercio") {
+          previo.direccionComercio.ciudad = values.ciudad;
+          previo.direccionComercio.calle = values.calle;
+          previo.direccionComercio.numero = Number(values.numero);
+          previo.direccionComercio.referencia = values.referencia;
         }
-        if (tipo=="Entrega"){
-          previo.direccionEntrega.ciudad=values.ciudad
-          previo.direccionEntrega.calle=values.calle
-          previo.direccionEntrega.numero=Number(values.numero)
-          previo.direccionEntrega.referencia=values.referencia
+        if (tipo == "Entrega") {
+          previo.direccionEntrega.ciudad = values.ciudad;
+          previo.direccionEntrega.calle = values.calle;
+          previo.direccionEntrega.numero = Number(values.numero);
+          previo.direccionEntrega.referencia = values.referencia;
         }
-        return(previo)
-      })
+        return previo;
+      });
       avanzarEtapa();
     },
   });
@@ -72,14 +80,17 @@ export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEsta
             <h2>{titulo}</h2>
           </Grid>
           <Grid item xs={12}>
-            <FormControl fullWidth>
+            <FormControl
+              fullWidth
+              error={formik.touched.ciudad && Boolean(formik.errors.ciudad)}
+            >
               <InputLabel id="ciudad-label">Ciudad</InputLabel>
               <Select
                 labelId="ciudad-label"
                 id="ciudad"
                 name="ciudad"
                 value={ciudad}
-                onChange={(event)=>{
+                onChange={(event) => {
                   formik.handleChange(event);
                   handleChangeCiudad(event);
                 }}
@@ -91,11 +102,12 @@ export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEsta
             </FormControl>
 
             {formik.errors.ciudad && formik.touched.ciudad && (
-              <div>{formik.errors.ciudad}</div>
+              <Typography style={{ color: "red" }}>{formik.errors.ciudad}</Typography>
             )}
           </Grid>
           <Grid item xs={8}>
             <TextField
+              error={formik.touched.calle && Boolean(formik.errors.calle)}
               fullWidth
               id="calle"
               name="calle"
@@ -104,11 +116,12 @@ export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEsta
               onChange={formik.handleChange}
             />
             {formik.errors.calle && formik.touched.calle && (
-              <div>{formik.errors.calle}</div>
+              <Typography style={{ color: "red" }}>{formik.errors.calle}</Typography>
             )}
           </Grid>
           <Grid item xs={4}>
             <TextField
+              error={formik.touched.numero && Boolean(formik.errors.numero)}
               fullWidth
               id="numero"
               name="numero"
@@ -118,11 +131,11 @@ export const DomicilioForm = ({ titulo, avanzarEtapa, datosEstados, setDatosEsta
               onChange={formik.handleChange}
             />
             {formik.errors.numero && formik.touched.numero && (
-              <div>{formik.errors.numero}</div>
+              <Typography style={{color:"red"}}>{formik.errors.numero}</Typography>
             )}
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <TextField 
               fullWidth
               id="referencia"
               name="referencia"
