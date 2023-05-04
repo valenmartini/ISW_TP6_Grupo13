@@ -124,7 +124,7 @@ export const PagoTarjeta = ({
               <Grid
                 container
                 sx={{ maxWidth: "500px", marginTop: "8pt" }}
-                spacing={2}
+                spacing={3}
               >
                 <Grid item xs={12}>
                   <TextField

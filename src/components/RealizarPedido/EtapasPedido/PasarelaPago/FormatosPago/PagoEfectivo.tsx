@@ -68,7 +68,7 @@ export const PagoEfectivo = ({
           >
             <Grid
               container
-              spacing={2}
+              spacing={3}
               sx={{ maxWidth: "500px", marginTop: "8pt" }}
             >
               <Grid item xs={12}>

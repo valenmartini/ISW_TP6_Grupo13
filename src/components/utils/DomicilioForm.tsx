@@ -2,6 +2,7 @@ import {
   Button,
   Container,
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -20,7 +21,7 @@ const schema = yup.object().shape({
   calle: yup.string().required("La calle es obligatoria"),
   numero: yup
     .number()
-    .min(1, "No puede ingresar un numero no positivo")
+    .min(0, "No puede ingresar un numero negativo")
     .typeError("El número debe ser un valor numérico")
     .required("El número es obligatorio"),
 });
@@ -71,13 +72,19 @@ export const DomicilioForm = ({
         onSubmit={formik.handleSubmit}
         style={{ display: "flex", justifyContent: "center" }}
       >
-        <Grid
-          container
-          spacing={2}
-          sx={{ maxWidth: "500px", marginTop: "8pt" }}
-        >
+        <Grid container spacing={3} sx={{ maxWidth: "500px" }}>
           <Grid item xs={12}>
-            <h2>{titulo}</h2>
+            <Typography
+              textAlign="center"
+              style={{
+                color: "#0E182C",
+                fontWeight: "bold",
+                marginTop: "24pt",
+                marginBottom: "16pt",
+              }}
+            >
+              {titulo}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <FormControl
@@ -99,11 +106,8 @@ export const DomicilioForm = ({
                 <MenuItem value={"San Fransisco"}>San Fransisco</MenuItem>
                 <MenuItem value={"Villa Carlos Paz"}>Villa Carlos Paz</MenuItem>
               </Select>
+              {formik.touched.ciudad && (<FormHelperText error>{formik.errors.ciudad}</FormHelperText>)}
             </FormControl>
-
-            {formik.errors.ciudad && formik.touched.ciudad && (
-              <Typography style={{ color: "red" }}>{formik.errors.ciudad}</Typography>
-            )}
           </Grid>
           <Grid item xs={8}>
             <TextField
@@ -114,10 +118,8 @@ export const DomicilioForm = ({
               label="Calle"
               value={formik.values.calle}
               onChange={formik.handleChange}
+              helperText={formik.touched.calle && formik.errors.calle}
             />
-            {formik.errors.calle && formik.touched.calle && (
-              <Typography style={{ color: "red" }}>{formik.errors.calle}</Typography>
-            )}
           </Grid>
           <Grid item xs={4}>
             <TextField
@@ -129,13 +131,11 @@ export const DomicilioForm = ({
               type="number"
               value={formik.values.numero}
               onChange={formik.handleChange}
+              helperText={formik.touched.numero && formik.errors.numero}
             />
-            {formik.errors.numero && formik.touched.numero && (
-              <Typography style={{color:"red"}}>{formik.errors.numero}</Typography>
-            )}
           </Grid>
           <Grid item xs={12}>
-            <TextField 
+            <TextField
               fullWidth
               id="referencia"
               name="referencia"

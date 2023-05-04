@@ -22,7 +22,7 @@ body {
 .multi-step-container {
   display: flex;
   position: relative;
-  height: 580px;
+  height: 78vh;
   overflow-x: hidden;
 }
 
