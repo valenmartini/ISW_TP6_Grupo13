@@ -8,9 +8,10 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { VisualizarRecorrido } from "./EtapasPedido/VisualizarRecorrido/VisualizarRecorrido";
 import { PasarelaPago } from "./EtapasPedido/PasarelaPago/PasarelaPago";
 import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
 
-interface DatosEstados {
+export interface DatosEstados {
   itemABuscar: {
     descripcionItem?: string;
     imagenItem?: any;
@@ -31,16 +32,16 @@ interface DatosEstados {
     total?: number;
   };
   pasarelaPago: {
-    formaDePago?: string;
+    formaDePago?: number;
     montoEfectivo?: number;
     datosTarjeta?: {
-      numeroTarjeta: string;
-      fechaVencimiento: string;
-      codigoSeguridad: number;
+      numeroTarjeta?: string;
+      fechaVencimiento?: string;
+      codigoSeguridad?: number;
     };
     datosTitular?: {
-      nombreTitular: string;
-      apellidoTitular: string;
+      nombreTitular?: string;
+      apellidoTitular?: string;
     };
   };
   resumenFinal: {
@@ -59,6 +60,14 @@ export interface EtapaProps {
   avanzarEtapa: any;
 }
 
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#415D23",
+    },
+  },
+});
+
 export const RealizarPedido = () => {
   const [etapaActual, setEtapaActual] = useState<number>(0);
   const [reverse, setReverse] = useState(false);
@@ -72,13 +81,17 @@ export const RealizarPedido = () => {
   });
 
   const avanzarEtapa = () => {
-    setEtapaActual(etapaActual + 1);
-    setReverse(false);
+    if (etapaActual < 6) {
+      setEtapaActual(etapaActual + 1);
+      setReverse(false);
+    }
   };
 
   const volverEtapa = () => {
-    setEtapaActual(etapaActual - 1);
-    setReverse(true);
+    if (etapaActual > 0) {
+      setEtapaActual(etapaActual - 1);
+      setReverse(true);
+    }
   };
 
   const etapas: Etapa[] = [
@@ -125,7 +138,7 @@ export const RealizarPedido = () => {
     {
       idEtapa: 4,
       componente: (
-        <PasarelaPago
+        <FormatoPago
           datosEstados={datosEstados}
           setDatosEstados={setDatosEstados}
           avanzarEtapa={avanzarEtapa}
@@ -134,6 +147,16 @@ export const RealizarPedido = () => {
     },
     {
       idEtapa: 5,
+      componente: (
+        <PasarelaPago
+          datosEstados={datosEstados}
+          setDatosEstados={setDatosEstados}
+          avanzarEtapa={avanzarEtapa}
+        />
+      ),
+    },
+    {
+      idEtapa: 6,
       componente: (
         <ResumenFinal
           datosEstados={datosEstados}
@@ -144,36 +167,13 @@ export const RealizarPedido = () => {
     },
   ];
 
-  const transitionStyle = {
-    transition: "all 0.5s ease",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    opacity: 0,
-    transform: `translateX(${reverse ? "100%" : "-100%"})`,
-  };
-
-  const activeStyle = {
-    opacity: 1,
-    transform: "translateX(0)",
-  };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#0E182C",
-      },
-    },
-  });
-
   return (
     <div>
       <div>
         <ThemeProvider theme={theme}>
           <LinearProgress
             variant="determinate"
-            value={(etapaActual / 5) * 100}
+            value={(etapaActual / 6) * 100}
             color="primary"
           />
         </ThemeProvider>
@@ -189,8 +189,8 @@ export const RealizarPedido = () => {
           }}
         >
           <div
+            className="light-background-color"
             style={{
-              backgroundColor: "#ede8e8",
               borderRadius: "50%",
               width: "26pt",
               height: "26pt",
@@ -200,11 +200,11 @@ export const RealizarPedido = () => {
               boxShadow: "12px 3px 19px -11px rgba(0,0,0,0.21)",
             }}
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon className="dark-color" />
           </div>
         </IconButton>
       </div>
-      <div style={{ position: "relative" }}>
+      <div className="multi-step-container" style={{ position: "relative" }}>
         {etapas.map(({ idEtapa, componente }) => {
           const activeClass =
             etapaActual === idEtapa
@@ -216,7 +216,7 @@ export const RealizarPedido = () => {
             <div
               className={`multi-step-content ${activeClass}`}
               key={idEtapa}
-              style={{ display: "flex", width: "100%", position: "absolute" }}
+              style={{ width: "100%" }}
             >
               {componente}
             </div>
@@ -233,7 +233,8 @@ export const RealizarPedido = () => {
         <Button
           onClick={avanzarEtapa}
           variant="contained"
-          style={{ backgroundColor: "#0E182C", textTransform: 'none', fontWeight: 'bold' }}
+          className="medium-background-color"
+          style={{ textTransform: "none", fontWeight: "bold" }}
           endIcon={<ArrowForwardIcon />}
         >
           Siguiente
