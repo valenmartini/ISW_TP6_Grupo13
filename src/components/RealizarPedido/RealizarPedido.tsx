@@ -81,13 +81,17 @@ export const RealizarPedido = () => {
   });
 
   const avanzarEtapa = () => {
-    setEtapaActual(etapaActual + 1);
-    setReverse(false);
+    if (etapaActual < 6) {
+      setEtapaActual(etapaActual + 1);
+      setReverse(false);
+    }
   };
 
   const volverEtapa = () => {
-    setEtapaActual(etapaActual - 1);
-    setReverse(true);
+    if (etapaActual > 0) {
+      setEtapaActual(etapaActual - 1);
+      setReverse(true);
+    }
   };
 
   const etapas: Etapa[] = [
@@ -162,8 +166,6 @@ export const RealizarPedido = () => {
       ),
     },
   ];
-
-
 
   return (
     <div>
