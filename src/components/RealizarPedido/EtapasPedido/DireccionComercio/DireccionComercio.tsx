@@ -67,7 +67,8 @@ function DireccionComercio() {
           onChange={handleChangeCiudad}
         >
           <MenuItem value={'Córdoba'}>Córdoba</MenuItem>
-          <MenuItem value={'Rosario'}>Rosario</MenuItem>
+          <MenuItem value={'San Fransisco'}>San Fransisco</MenuItem>
+          <MenuItem value={'Villa Carlos Paz'}>Villa Carlos Paz</MenuItem>
         </Select>
       </FormControl>
       {formik.errors.ciudad && formik.touched.ciudad && (
