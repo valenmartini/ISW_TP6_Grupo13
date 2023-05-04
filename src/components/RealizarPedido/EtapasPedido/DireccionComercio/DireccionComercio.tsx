@@ -1,87 +1,122 @@
 import React, { useState } from 'react';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
-import { TextField } from '@mui/material';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+} from '@material-ui/core';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  ciudad: yup.string().required('La ciudad es obligatoria'),
+  calle: yup.string().required('La calle es obligatoria'),
+  numero: yup
+    .number()
+    .typeError('El número debe ser un valor numérico')
+    .required('El número es obligatorio'),
+});
+
+const useStyles = makeStyles((theme: { spacing: (arg0: number) => any; }) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  textField: {
+    margin: theme.spacing(1),
+    width: '25ch',
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 function DireccionComercio() {
-  const [direccion, setDireccion] = useState('');
-  const [calle, setCalle] = useState('');
-  const [numero, setNumero] = useState('');
+  const classes = useStyles();
   const [ciudad, setCiudad] = useState('');
-  const [referencia, setReferencia] = useState('');
-
-  const handleSelect = async (address: string) => {
-    const results = await geocodeByAddress(address);
-    const latLng = await getLatLng(results[0]);
-    const direccionCompleta = results[0].formatted_address;
-    setDireccion(direccionCompleta);
+  const handleChangeCiudad = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setCiudad(event.target.value as string);
   };
 
+  const formik = useFormik({
+    initialValues: {
+      ciudad: '',
+      calle: '',
+      numero: '',
+      referencia: '',
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
-    <div>
+    <form onSubmit={formik.handleSubmit}>
       <h2>Indica la dirección de tu comercio</h2>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="ciudad-label">Ciudad</InputLabel>
+        <Select
+          labelId="ciudad-label"
+          id="ciudad"
+          name="ciudad"
+          value={ciudad}
+          onChange={handleChangeCiudad}
+        >
+          <MenuItem value={'Córdoba'}>Córdoba</MenuItem>
+          <MenuItem value={'Rosario'}>Rosario</MenuItem>
+        </Select>
+      </FormControl>
+      {formik.errors.ciudad && formik.touched.ciudad && (
+        <div>{formik.errors.ciudad}</div>
+      )}
+
       <TextField
         id="calle"
+        name="calle"
         label="Calle"
-        value={calle}
-        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setCalle(e.target.value)}
-        sx={{ marginBottom: '16px' }}
+        className={classes.textField}
+        value={formik.values.calle}
+        onChange={formik.handleChange}
       />
+      {formik.errors.calle && formik.touched.calle && (
+        <div>{formik.errors.calle}</div>
+      )}
+
       <TextField
         id="numero"
+        name="numero"
         label="Número"
-        value={numero}
-        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setNumero(e.target.value)}
-        sx={{ marginBottom: '16px' }}
+        type="number"
+        className={classes.textField}
+        value={formik.values.numero}
+        onChange={formik.handleChange}
       />
-      <TextField
-        id="ciudad"
-        label="Ciudad"
-        value={ciudad}
-        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setCiudad(e.target.value)}
-        sx={{ marginBottom: '16px' }}
-      />
+      {formik.errors.numero && formik.touched.numero && (
+        <div>{formik.errors.numero}</div>
+      )}
+
       <TextField
         id="referencia"
+        name="referencia"
         label="Referencia"
-        value={referencia}
-        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setReferencia(e.target.value)}
-        sx={{ marginBottom: '16px' }}
+        className={classes.textField}
+        value={formik.values.referencia}
+        onChange={formik.handleChange}
       />
-      <PlacesAutocomplete
-        value={direccion}
-        onChange={setDireccion}
-        onSelect={handleSelect}
-      >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <TextField
-              {...getInputProps({ placeholder: 'Busca tu dirección...' })}
-              sx={{ marginBottom: '16px' }}
-            />
-            <div>
-              {loading ? <div>Cargando...</div> : null}
 
-              {suggestions.map((suggestion) => {
-  const style = {
-    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-  };
-  return (
-    <div
-      {...getSuggestionItemProps(suggestion, { style })}
-      key={suggestion.placeId}
-    >
-      {suggestion.description}
-    </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
-    </div>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        className={classes.button}
+      >
+        Enviar
+      </Button>
+    </form>
   );
 }
 
