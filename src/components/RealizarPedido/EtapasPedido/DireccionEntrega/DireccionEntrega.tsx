@@ -68,8 +68,7 @@ function DireccionEntrega() {
           onChange={handleChangeCiudad}
         >
           <MenuItem value={'Córdoba'}>Córdoba</MenuItem>
-          <MenuItem value={'San Fransisco'}>San Fransisco</MenuItem>
-          <MenuItem value={'Villa Carlos Paz'}>Villa Carlos Paz</MenuItem>
+          <MenuItem value={'Rosario'}>Rosario</MenuItem>
         </Select>
       </FormControl>
       {formik.errors.ciudad && formik.touched.ciudad && (
