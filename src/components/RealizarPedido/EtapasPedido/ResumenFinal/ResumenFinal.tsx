@@ -41,20 +41,46 @@ export const ResumenFinal = (props: EtapaProps) => {
   const { itemABuscar, direccionComercio, direccionEntrega, pasarelaPago, visualizarRecorrido, resumenFinal } = props.datosEstados
 
   const direccionComercioCompleta = direccionComercio.calle && direccionComercio.numero ? direccionComercio.calle + " " +  direccionComercio.numero : "";
-  const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + direccionEntrega.numero : "";
-  const numeroTarjetaCodificado = pasarelaPago.formaDePago === '0' ? 'XXXX-XXXX-XXXX-' + pasarelaPago.datosTarjeta?.numeroTarjeta.slice(-4) : '';
+  const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + " " + direccionEntrega.numero : "";
+  const numeroTarjetaCodificado = pasarelaPago.datosTarjeta?.numeroTarjeta ? 'XXXX-XXXX-XXXX-' + pasarelaPago.datosTarjeta?.numeroTarjeta.slice(-4) : '';
 
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const horaActual = hours.toString() + ':' + minutes.toString();
 
-  const [horaRecepcion, setHoraRecepcion] = useState('')
-  const [time, setTime] = useState('00:00')
+  const [horaRecepcion, setHoraRecepcion] = useState('1');
+  const [time, setTime] = useState(sumarHora(horaActual, 15));
+  const [readOnly, setReadOnly] = useState(true);
 
   const handleChange = (event: SelectChangeEvent) => {
     setHoraRecepcion(event.target.value as string);
+    if (horaRecepcion === '2') {
+      setTime(sumarHora(horaActual, 15));
+      setReadOnly(true);
+    } else {
+      setReadOnly(false);
+    }
   };
 
   const handleChange2 = (event: any) => {
     setTime(event.target.value);
   };
+
+  function sumarHora(hora: string, minutosASumar: number) {
+    let horas: number = parseInt(hora.slice(0,2));
+    let minutos: number = parseInt(hora.slice(-2));
+
+    let minutosFinal: number | string= minutos + minutosASumar >= 60 ? (minutos + minutosASumar - 60) : (minutos + minutosASumar);
+    let horasFinal: number | string = minutos + minutosASumar >= 60 ? (horas+1) : (horas);
+    
+    horasFinal = horasFinal < 10 ? "0" + horasFinal : horasFinal;
+    minutosFinal = minutosFinal < 10 ? "0" + minutosFinal : minutosFinal;
+
+    let resultado: string = horasFinal + ":" + minutosFinal;
+
+    return resultado
+  }
 
   return (
     <List sx={style} component="nav" aria-label="mailbox folders">
@@ -91,15 +117,6 @@ export const ResumenFinal = (props: EtapaProps) => {
         )}
       </ListItem>
       <Divider />
-      <ListItem>        
-        <ListItemAvatar>
-          <Avatar>
-            <AccountBalanceIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Forma de Pago" secondary={pasarelaPago.formaDePago} />
-      </ListItem>
-      <Divider />
       <ListItem>
         <ListItemAvatar>
           <Avatar>
@@ -107,6 +124,15 @@ export const ResumenFinal = (props: EtapaProps) => {
           </Avatar>
         </ListItemAvatar>
         <ListItemText primary="Monto a Pagar" secondary={"$" + visualizarRecorrido.total} />
+      </ListItem>
+      <Divider />
+      <ListItem>        
+        <ListItemAvatar>
+          <Avatar>
+            <AccountBalanceIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Forma de Pago" secondary={pasarelaPago.formaDePago} />
       </ListItem>
       <Divider />
       {pasarelaPago.formaDePago === '0' && (
@@ -118,7 +144,7 @@ export const ResumenFinal = (props: EtapaProps) => {
                 <AttachMoneyIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Cantidad de Efectivo" secondary={"$" + pasarelaPago.montoEfectivo} />
+            <ListItemText primary="¿Con Cuánto Pagas?" secondary={"$" + pasarelaPago.montoEfectivo} />
           </ListItem>
           <Divider />
         </React.Fragment>
@@ -132,20 +158,11 @@ export const ResumenFinal = (props: EtapaProps) => {
                 <AttachMoneyIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Cantidad de Efectivo" secondary={numeroTarjetaCodificado} />
+            <ListItemText primary="Tarjeta Utilizada" secondary={numeroTarjetaCodificado} />
           </ListItem>
           <Divider />
         </React.Fragment>
       )}
-      <Divider />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <AttachMoneyIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Monto a Pagar" secondary={"$" + visualizarRecorrido.total} />
-      </ListItem>
       <Divider />
       <ListItem>
         <ListItemAvatar>
@@ -155,11 +172,9 @@ export const ResumenFinal = (props: EtapaProps) => {
         </ListItemAvatar>
         {/* <ListItemText primary="Hora de Envio" secondary={resumenFinal.horaEnvio} /> */}
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Hora de Envio</InputLabel>
+          <InputLabel>Hora de Envio</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={horaRecepcion ? horaRecepcion.toString() : '1'}
+            value={horaRecepcion ? horaRecepcion.toString() : '2'}
             label="Hora de Envio"
             onChange={handleChange}
           >
@@ -170,10 +185,11 @@ export const ResumenFinal = (props: EtapaProps) => {
       </ListItem>
       <ListItem>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Hora de Envio</InputLabel>
+          <InputLabel>Hora de Envio</InputLabel>
           <Input
             type="time"
             value={time}
+            readOnly={readOnly}
             onChange={handleChange2}
           />
         </FormControl>
