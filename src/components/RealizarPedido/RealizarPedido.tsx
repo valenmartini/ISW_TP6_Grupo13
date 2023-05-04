@@ -11,23 +11,21 @@ import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
 
+
+export interface Direccion {
+  calle?: string;
+  numero?: number;
+  ciudad?: string;
+  referencia?: string | null;
+}
+
 export interface DatosEstados {
   itemABuscar: {
     descripcionItem?: string;
     imagenItem?: any;
   };
-  direccionComercio: {
-    calle?: string;
-    numero?: number;
-    ciudad?: string;
-    referencia?: string | null;
-  };
-  direccionEntrega: {
-    calle?: string;
-    numero?: number;
-    ciudad?: string;
-    referencia?: string | null;
-  };
+  direccionComercio: Direccion;
+  direccionEntrega: Direccion;
   visualizarRecorrido: {
     total?: number;
   };
@@ -58,6 +56,7 @@ export interface EtapaProps {
   datosEstados: DatosEstados;
   setDatosEstados: any;
   avanzarEtapa: any;
+  etapa?: number;
 }
 
 export const RealizarPedido = () => {
@@ -120,6 +119,7 @@ export const RealizarPedido = () => {
           datosEstados={datosEstados}
           setDatosEstados={setDatosEstados}
           avanzarEtapa={avanzarEtapa}
+          etapa={etapaActual}
         />
       ),
     },
