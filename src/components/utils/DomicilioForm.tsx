@@ -35,6 +35,7 @@ export const DomicilioForm = ({
   tipo,
 }: any) => {
   const [ciudad, setCiudad] = useState("");
+  const [errorCiudad, setErrorCiudad] = useState(false);
   const handleChangeCiudad = (event: any) => {
     setCiudad(event.target.value as string);
   };
@@ -48,7 +49,12 @@ export const DomicilioForm = ({
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      if(tipo === "Entrega" && values.ciudad !== datosEstados.direccionComercio.ciudad) {
+        setErrorCiudad(true);
+        return;
+      } else {
+        setErrorCiudad(false);
+      }
       setDatosEstados((previo: DatosEstados) => {
         if (tipo == "Comercio") {
           previo.direccionComercio.ciudad = values.ciudad;
@@ -90,7 +96,7 @@ export const DomicilioForm = ({
           <Grid item xs={12}>
             <FormControl
               fullWidth
-              error={formik.touched.ciudad && Boolean(formik.errors.ciudad)}
+              error={formik.touched.ciudad && (Boolean(formik.errors.ciudad) || errorCiudad)}
             >
               <InputLabel id="ciudad-label">Ciudad*</InputLabel>
               <Select
@@ -105,11 +111,11 @@ export const DomicilioForm = ({
                 }}
               >
                 <MenuItem value={"Córdoba"}>Córdoba</MenuItem>
-                <MenuItem value={"San Fransisco"}>San Fransisco</MenuItem>
+                <MenuItem value={"San Francisco"}>San Fransisco</MenuItem>
                 <MenuItem value={"Villa Carlos Paz"}>Villa Carlos Paz</MenuItem>
               </Select>
               {formik.touched.ciudad && (
-                <FormHelperText error>{formik.errors.ciudad}</FormHelperText>
+                <FormHelperText error>{errorCiudad? "Debe seleccionar la misma ciudad del comercio" : formik.errors.ciudad}</FormHelperText>
               )}
             </FormControl>
           </Grid>
