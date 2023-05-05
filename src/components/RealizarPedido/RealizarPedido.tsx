@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ItemABuscar from "./EtapasPedido/ItemABuscar/ItemABuscar";
 import DireccionComercio from "./EtapasPedido/DireccionComercio/DireccionComercio";
 import DireccionEntrega from "./EtapasPedido/DireccionEntrega/DireccionEntrega";
-import { Button, IconButton, LinearProgress } from "@mui/material";
+import { AppBar, Box, Button, IconButton, LinearProgress } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { VisualizarRecorrido } from "./EtapasPedido/VisualizarRecorrido/VisualizarRecorrido";
@@ -168,17 +168,18 @@ export const RealizarPedido = () => {
   ];
 
   return (
-    <div>
-      <div>
-        <ThemeProvider theme={theme}>
-          <LinearProgress
-            variant="determinate"
-            value={(etapaActual / 6) * 100}
-            color="primary"
-          />
-        </ThemeProvider>
-      </div>
-      <div>
+    <>
+      <Box>
+        <AppBar></AppBar>
+      </Box>
+      <ThemeProvider theme={theme}>
+        <LinearProgress
+          variant="determinate"
+          value={(etapaActual / 6) * 100}
+          color="primary"
+        />
+      </ThemeProvider>
+      <>
         <IconButton
           onClick={volverEtapa}
           style={{
@@ -203,7 +204,7 @@ export const RealizarPedido = () => {
             <ArrowBackIcon className="dark-color" />
           </div>
         </IconButton>
-      </div>
+      </>
       <div className="multi-step-container" style={{ position: "relative" }}>
         {etapas.map(({ idEtapa, componente }) => {
           const activeClass =
@@ -241,6 +242,6 @@ export const RealizarPedido = () => {
           </Button>
         </ThemeProvider>
       </div>
-    </div>
+    </>
   );
 };

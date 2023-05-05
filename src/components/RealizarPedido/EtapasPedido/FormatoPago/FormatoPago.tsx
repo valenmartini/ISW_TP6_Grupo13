@@ -71,11 +71,11 @@ export const FormatoPago = (props: EtapaProps) => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Item
                   sx={{
                     border: `3px solid ${
-                      formaPago === 0 ? "#EE964B" : "white"
+                      formaPago === 0 ? "#0D3B66" : "white"
                     }`,
                     cursor: "pointer",
                   }}
@@ -89,7 +89,7 @@ export const FormatoPago = (props: EtapaProps) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        backgroundColor: '#EE964B',
+                        backgroundColor: '#0D3B66',
                         borderRadius: "50%",
                         height: "36pt",
                         width: "36pt",
@@ -112,7 +112,7 @@ export const FormatoPago = (props: EtapaProps) => {
                   </Typography>
                 </Item>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Item
                   sx={{
                     border: `3px solid ${

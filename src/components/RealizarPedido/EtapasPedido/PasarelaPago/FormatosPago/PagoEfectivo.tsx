@@ -69,7 +69,7 @@ export const PagoEfectivo = ({
             <Grid
               container
               spacing={3}
-              sx={{ maxWidth: "500px", marginTop: "8pt" }}
+              sx={{ maxWidth: "500px" }}
             >
               <Grid item xs={12}>
               <Typography
@@ -77,7 +77,7 @@ export const PagoEfectivo = ({
               style={{
                 color: "#0E182C",
                 fontWeight: "bold",
-                marginTop: "24pt",
+                marginTop: "16pt",
                 marginBottom: "16pt",
               }}
             >

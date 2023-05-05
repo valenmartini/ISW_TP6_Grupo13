@@ -40,7 +40,7 @@ const ItemABuscar = ({
   }
 
   return (
-    <Container style={{ display: "flex", justifyContent: "center" }}>
+    <Container style={{ display: "flex", justifyContent: "center", maxWidth: '500px' }}>
       <form>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs={12}>
