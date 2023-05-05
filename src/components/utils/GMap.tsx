@@ -13,7 +13,7 @@ interface GMapProps {
 }
 
 
-const dirToString = (toTransform: Direccion) => {
+export const dirToString = (toTransform: Direccion) => {
 
   const numeroMap = (toTransform.numero === 0) ? "" : toTransform.numero;
   return `${toTransform.calle} ${numeroMap}, ${toTransform.ciudad}`;

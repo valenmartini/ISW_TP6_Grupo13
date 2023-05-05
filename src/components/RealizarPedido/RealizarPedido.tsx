@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ItemABuscar from "./EtapasPedido/ItemABuscar/ItemABuscar";
-import { DireccionComercio } from "./EtapasPedido/DireccionComercio/DireccionComercio";
-import { DireccionEntrega } from "./EtapasPedido/DireccionEntrega/DireccionEntrega";
+import DireccionComercio from "./EtapasPedido/DireccionComercio/DireccionComercio";
+import DireccionEntrega from "./EtapasPedido/DireccionEntrega/DireccionEntrega";
 import { Button, IconButton, LinearProgress } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -59,6 +59,14 @@ export interface EtapaProps {
   etapa?: number;
 }
 
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#415D23",
+    },
+  },
+});
+
 export const RealizarPedido = () => {
   const [etapaActual, setEtapaActual] = useState<number>(0);
   const [reverse, setReverse] = useState(false);
@@ -72,13 +80,17 @@ export const RealizarPedido = () => {
   });
 
   const avanzarEtapa = () => {
-    setEtapaActual(etapaActual + 1);
-    setReverse(false);
+    if (etapaActual < 6) {
+      setEtapaActual(etapaActual + 1);
+      setReverse(false);
+    }
   };
 
   const volverEtapa = () => {
-    setEtapaActual(etapaActual - 1);
-    setReverse(true);
+    if (etapaActual > 0) {
+      setEtapaActual(etapaActual - 1);
+      setReverse(true);
+    }
   };
 
   const etapas: Etapa[] = [
@@ -154,14 +166,6 @@ export const RealizarPedido = () => {
       ),
     },
   ];
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#415D23",
-      },
-    },
-  });
 
   return (
     <div>

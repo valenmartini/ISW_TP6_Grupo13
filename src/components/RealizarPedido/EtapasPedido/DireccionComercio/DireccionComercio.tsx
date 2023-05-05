@@ -1,8 +1,17 @@
-import React from 'react'
-import { EtapaProps } from '../../RealizarPedido'
+import React, { useState } from "react";
+import { EtapaProps } from "../../RealizarPedido";
+import { DomicilioForm } from "@component/components/utils/DomicilioForm";
 
-export const DireccionComercio = (props: EtapaProps) => {
+function DireccionComercio(props: EtapaProps) {
   return (
-    <div>DireccionComercio</div>
-  )
+    <DomicilioForm
+      titulo="Ingrese la direccion del comercio"
+      avanzarEtapa={props.avanzarEtapa}
+      datosEstados={props.datosEstados}
+      setDatosEstados={props.setDatosEstados}
+      tipo={"Comercio"}
+    />
+  );
 }
+
+export default DireccionComercio;
