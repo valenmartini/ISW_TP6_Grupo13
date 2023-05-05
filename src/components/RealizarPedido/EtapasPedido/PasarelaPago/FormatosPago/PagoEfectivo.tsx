@@ -25,7 +25,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const validationSchema = Yup.object().shape({
   montoEfectivo: Yup.number()
-    .min(100, "El minimo es de 100 pesos")
+    .min(1, "El minimo es de 1 peso").max(20000, "El maximo permitido es de 20.000 pesos")
     .required("Campo requerido"),
 });
 
@@ -72,14 +72,22 @@ export const PagoEfectivo = ({
               sx={{ maxWidth: "500px", marginTop: "8pt" }}
             >
               <Grid item xs={12}>
-                <Typography className="dark-color">
+              <Typography
+              textAlign="center"
+              style={{
+                color: "#0E182C",
+                fontWeight: "bold",
+                marginTop: "24pt",
+                marginBottom: "16pt",
+              }}
+            >
                   Indicale al repartidor con cuanto vas a pagar
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth style={{ marginTop: "12pt" }}>
                   <InputLabel htmlFor="cantidad-cash" error={touched.montoEfectivo && Boolean(errors.montoEfectivo)}>
-                    Cantidad en efectivo
+                    Cantidad en efectivo*
                   </InputLabel>
                   <OutlinedInput
                     id="cantidad-cash"
@@ -99,6 +107,7 @@ export const PagoEfectivo = ({
                   />
                   {touched.montoEfectivo && (<FormHelperText error>{errors.montoEfectivo}</FormHelperText>)}
                 </FormControl>
+                <Typography style={{color:'lightgray', fontSize: '0.8rem'}}>Los campos con * son obligatorios</Typography>
               </Grid>
               <Grid
                 item

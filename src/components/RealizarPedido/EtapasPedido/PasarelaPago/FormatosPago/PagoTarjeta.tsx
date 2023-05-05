@@ -1,6 +1,7 @@
 import {
   DatosEstados,
   EtapaProps,
+  theme,
 } from "@component/components/RealizarPedido/RealizarPedido";
 import {
   Button,
@@ -8,6 +9,7 @@ import {
   Grid,
   TextField,
   ThemeProvider,
+  Typography,
   createTheme,
 } from "@mui/material";
 import { Formik } from "formik";
@@ -59,6 +61,8 @@ export const PagoTarjeta = ({
     name: "",
     focus: "",
   });
+  const [fechaExpirada, setFechaExpirada] = useState(false);
+  const [fechaInvalida, setFechaInvalida] = useState(false);
 
   const handleInputChange = (evt: any) => {
     const { name, value } = evt.target;
@@ -69,14 +73,6 @@ export const PagoTarjeta = ({
   const handleInputFocus = (evt: any) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
   };
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#415D23",
-      },
-    },
-  });
 
   return (
     <>
@@ -94,6 +90,22 @@ export const PagoTarjeta = ({
           cvc: any;
           name: any;
         }) => {
+          const fechaSplitted = values.expiry.split("/");
+          if (fechaSplitted[0] < "01" || fechaSplitted[0] > 12) {
+            setFechaInvalida(true);
+            setFechaExpirada(false);
+            return;
+          } else {
+            setFechaInvalida(false);
+          }
+          const fechaActual = new Date();
+          const fechaParseada = new Date(Date.parse(`01/${values.expiry}`));
+          if (fechaParseada.getTime() < fechaActual.getTime()) {
+            setFechaExpirada(true);
+            return;
+          } else {
+            setFechaExpirada(false);
+          }
           setDatosEstados((prev: DatosEstados) => {
             prev.pasarelaPago.datosTarjeta = {
               numeroTarjeta: values.number,
@@ -130,10 +142,10 @@ export const PagoTarjeta = ({
                   <TextField
                     fullWidth
                     inputProps={{
-                      inputMode:"numeric"
+                      inputMode: "numeric",
                     }}
                     name="number"
-                    label="Numero de Tarjeta"
+                    label="Numero de Tarjeta*"
                     onChange={(e) => {
                       e.target.value = e.target.value.replace(/\D/g, "");
                       if (e.target.value.length > 16) {
@@ -154,7 +166,7 @@ export const PagoTarjeta = ({
                   <TextField
                     fullWidth
                     name="name"
-                    label="Nombre del Titular"
+                    label="Nombre del Titular*"
                     onChange={(e) => {
                       e.target.value = e.target.value.replace(/[0-9]/g, "");
                       handleChange(e);
@@ -169,12 +181,24 @@ export const PagoTarjeta = ({
                   <TextField
                     fullWidth
                     name="expiry"
-                    label="Fecha de Vencimiento"
+                    label="Fecha de Vencimiento*"
                     inputProps={{
-                      inputMode:"numeric"
+                      inputMode: "numeric",
                     }}
-                    error={touched.expiry && Boolean(errors.expiry)}
-                    helperText={touched.expiry && errors.expiry}
+                    error={
+                      (touched.expiry && Boolean(errors.expiry)) ||
+                      (touched.expiry && fechaInvalida)||
+                      (touched.expiry && fechaExpirada)
+                    }
+                    helperText={
+                      (touched.expiry && errors.expiry) ||
+                      (touched.expiry &&
+                        fechaExpirada &&
+                        "La tarjeta ha expirado") ||
+                      (touched.expiry &&
+                        fechaInvalida &&
+                        "Ingrese una fecha valida")
+                    }
                     onChange={(event) => {
                       const ultimoChar = event.target.value.charAt(
                         event.target.value.length - 1
@@ -209,9 +233,9 @@ export const PagoTarjeta = ({
                   <TextField
                     fullWidth
                     name="cvc"
-                    label="Codigo de Seguridad"
+                    label="Codigo de Seguridad*"
                     inputProps={{
-                      inputMode:"numeric"
+                      inputMode: "numeric",
                     }}
                     onChange={(e) => {
                       e.target.value = e.target.value.replace(/\D/g, "");
@@ -229,29 +253,34 @@ export const PagoTarjeta = ({
                     helperText={touched.cvc && errors.cvc}
                   />
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "12pt",
-                  }}
-                >
-                  <ThemeProvider theme={theme}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      style={{
-                        textTransform: "none",
-                        fontWeight: "bold",
-                      }}
-                      endIcon={<ArrowForwardIcon />}
-                    >
-                      Siguiente
-                    </Button>
-                  </ThemeProvider>
+                <Grid item xs={12}>
+                  <Typography
+                    style={{ color: "lightgray", fontSize: "0.8rem" }}
+                  >
+                    Los campos con * son obligatorios
+                  </Typography>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "12pt",
+                    }}
+                  >
+                    <ThemeProvider theme={theme}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        style={{
+                          textTransform: "none",
+                          fontWeight: "bold",
+                        }}
+                        endIcon={<ArrowForwardIcon />}
+                      >
+                        Siguiente
+                      </Button>
+                    </ThemeProvider>
+                  </div>
                 </Grid>
               </Grid>
             </form>

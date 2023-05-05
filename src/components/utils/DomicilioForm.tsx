@@ -8,13 +8,14 @@ import {
   MenuItem,
   Select,
   TextField,
+  ThemeProvider,
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as yup from "yup";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { DatosEstados } from "../RealizarPedido/RealizarPedido";
+import { DatosEstados, theme } from "../RealizarPedido/RealizarPedido";
 
 const schema = yup.object().shape({
   ciudad: yup.string().required("La ciudad es obligatoria"),
@@ -91,11 +92,12 @@ export const DomicilioForm = ({
               fullWidth
               error={formik.touched.ciudad && Boolean(formik.errors.ciudad)}
             >
-              <InputLabel id="ciudad-label">Ciudad</InputLabel>
+              <InputLabel id="ciudad-label">Ciudad*</InputLabel>
               <Select
                 labelId="ciudad-label"
                 id="ciudad"
                 name="ciudad"
+                label="Ciudad*"
                 value={ciudad}
                 onChange={(event) => {
                   formik.handleChange(event);
@@ -106,7 +108,9 @@ export const DomicilioForm = ({
                 <MenuItem value={"San Fransisco"}>San Fransisco</MenuItem>
                 <MenuItem value={"Villa Carlos Paz"}>Villa Carlos Paz</MenuItem>
               </Select>
-              {formik.touched.ciudad && (<FormHelperText error>{formik.errors.ciudad}</FormHelperText>)}
+              {formik.touched.ciudad && (
+                <FormHelperText error>{formik.errors.ciudad}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={8}>
@@ -115,7 +119,7 @@ export const DomicilioForm = ({
               fullWidth
               id="calle"
               name="calle"
-              label="Calle"
+              label="Calle*"
               value={formik.values.calle}
               onChange={formik.handleChange}
               helperText={formik.touched.calle && formik.errors.calle}
@@ -127,7 +131,7 @@ export const DomicilioForm = ({
               fullWidth
               id="numero"
               name="numero"
-              label="Número"
+              label="Número*"
               type="number"
               value={formik.values.numero}
               onChange={formik.handleChange}
@@ -143,6 +147,9 @@ export const DomicilioForm = ({
               value={formik.values.referencia}
               onChange={formik.handleChange}
             />
+            <Typography style={{ color: "lightgray", fontSize: "0.8rem" }}>
+              Los campos con * son obligatorios
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <div
@@ -152,15 +159,16 @@ export const DomicilioForm = ({
                 paddingTop: "48pt",
               }}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                className="medium-background-color"
-                style={{ textTransform: "none", fontWeight: "bold" }}
-                endIcon={<ArrowForwardIcon />}
-              >
-                Siguiente
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ textTransform: "none", fontWeight: "bold" }}
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Siguiente
+                </Button>
+              </ThemeProvider>
             </div>
           </Grid>
         </Grid>

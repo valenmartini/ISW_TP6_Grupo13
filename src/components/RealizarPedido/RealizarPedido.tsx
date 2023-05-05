@@ -63,7 +63,7 @@ export interface EtapaProps {
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#415D23",
+      main: "#F95738",
     },
   },
 });
@@ -230,15 +230,16 @@ export const RealizarPedido = () => {
           paddingTop: "48pt",
         }}
       >
-        <Button
-          onClick={avanzarEtapa}
-          variant="contained"
-          className="medium-background-color"
-          style={{ textTransform: "none", fontWeight: "bold" }}
-          endIcon={<ArrowForwardIcon />}
-        >
-          Siguiente
-        </Button>
+        <ThemeProvider theme={theme}>
+          <Button
+            onClick={avanzarEtapa}
+            variant="contained"
+            style={{ textTransform: "none", fontWeight: "bold" }}
+            endIcon={<ArrowForwardIcon />}
+          >
+            Siguiente
+          </Button>
+        </ThemeProvider>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DatosEstados, EtapaProps } from "../../RealizarPedido";
+import { DatosEstados, EtapaProps, theme } from "../../RealizarPedido";
 import { Formik } from "formik";
 import {
   Button,
@@ -34,14 +34,6 @@ export const FormatoPago = (props: EtapaProps) => {
     if (formaPago >= 0) setError(false);
   }, [formaPago, error]);
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#415D23",
-      },
-    },
-  });
-
   return (
     <Formik
       initialValues={{}}
@@ -51,7 +43,7 @@ export const FormatoPago = (props: EtapaProps) => {
           return;
         }
         console.log(formaPago);
-        
+
         props.setDatosEstados((prev: DatosEstados) => {
           prev.pasarelaPago.formaDePago = formaPago;
           return prev;
@@ -60,25 +52,30 @@ export const FormatoPago = (props: EtapaProps) => {
       }}
     >
       {({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
-          <Container sx={{ marginBottom: "24pt", maxWidth: "500px"  }} >
-            <Typography
-              align="center"
-              style={{
-                color: "#0E182C",
-                fontWeight: "bold",
-                marginTop: "24pt",
-              }}
-            >
-              Elige tu metodo de pago
-            </Typography>
+        <Container>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Grid container spacing={2} sx={{ maxWidth: "500px" }}>
+              <Grid item xs={12} sx={{ marginBottom: "24pt" }}>
+                <Typography
+                  align="center"
+                  style={{
+                    color: "#0E182C",
+                    fontWeight: "bold",
+                    marginTop: "24pt",
+                  }}
+                >
+                  Elige tu metodo de pago
+                </Typography>
+              </Grid>
 
-            <Grid container spacing={2} sx={{ marginTop: "24pt"}}>
               <Grid item xs={6}>
                 <Item
                   sx={{
                     border: `3px solid ${
-                      formaPago === 0 ? "#415D23" : "white"
+                      formaPago === 0 ? "#EE964B" : "white"
                     }`,
                     cursor: "pointer",
                   }}
@@ -88,11 +85,11 @@ export const FormatoPago = (props: EtapaProps) => {
                 >
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div
-                      className="green-background-color"
                       style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        backgroundColor: '#EE964B',
                         borderRadius: "50%",
                         height: "36pt",
                         width: "36pt",
@@ -105,8 +102,8 @@ export const FormatoPago = (props: EtapaProps) => {
                   </div>
                   <Typography
                     fontWeight={"bold"}
+                    className="dark-color"
                     sx={{
-                      color: "#1A1A1A",
                       marginTop: "8pt",
                       fontSize: "0.8rem",
                     }}
@@ -119,7 +116,7 @@ export const FormatoPago = (props: EtapaProps) => {
                 <Item
                   sx={{
                     border: `3px solid ${
-                      formaPago === 1 ? "#B8553A" : "white"
+                      formaPago === 1 ? "#0D3B66" : "white"
                     }`,
                     cursor: "pointer",
                   }}
@@ -129,11 +126,11 @@ export const FormatoPago = (props: EtapaProps) => {
                 >
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <div
-                    className="red-background-color"
                       style={{
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        backgroundColor:"#0D3B66",
                         borderRadius: "50%",
                         height: "36pt",
                         width: "36pt",
@@ -146,8 +143,8 @@ export const FormatoPago = (props: EtapaProps) => {
                   </div>
                   <Typography
                     fontWeight={"bold"}
+                    className="dark-color"
                     sx={{
-                      color: "#1A1A1A",
                       marginTop: "8pt",
                       fontSize: "0.8rem",
                     }}
@@ -156,31 +153,33 @@ export const FormatoPago = (props: EtapaProps) => {
                   </Typography>
                 </Item>
               </Grid>
-            </Grid>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: "48pt",
-              }}
-            >
-              <ThemeProvider theme={theme}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
+              <Grid item xs={12}>
+                <div
                   style={{
-                    textTransform: "none",
-                    fontWeight: "bold",
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingTop: "48pt",
                   }}
-                  endIcon={<ArrowForwardIcon />}
                 >
-                  Siguiente
-                </Button>
-              </ThemeProvider>
-            </div>
-          </Container>
-        </form>
+                  <ThemeProvider theme={theme}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        textTransform: "none",
+                        fontWeight: "bold",
+                      }}
+                      endIcon={<ArrowForwardIcon />}
+                    >
+                      Siguiente
+                    </Button>
+                  </ThemeProvider>
+                </div>
+              </Grid>
+            </Grid>
+          </form>
+        </Container>
       )}
     </Formik>
   );

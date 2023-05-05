@@ -1,16 +1,22 @@
 import React from "react";
-import { EtapaProps } from "../../RealizarPedido";
-import { Button, Grid, TextField } from "@mui/material";
+import { DatosEstados, EtapaProps, theme } from "../../RealizarPedido";
+import {
+  Button,
+  Container,
+  Grid,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import { MuiFileInput } from "mui-file-input";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
 
 const ItemABuscar = ({
   datosEstados,
   setDatosEstados,
   avanzarEtapa,
 }: EtapaProps) => {
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = React.useState();
   const [producto, setProd] = React.useState<string>("");
   const [warn, setWarn] = React.useState(false);
 
@@ -18,54 +24,65 @@ const ItemABuscar = ({
     setFile(newFile);
   };
 
-  const handleChangePorducto = (evento:any) => {
+  const handleChangePorducto = (evento: any) => {
     setProd(evento.target.value);
   };
 
-  
-
   function validate_prod() {
-
-    if (producto != ""){
-      avanzarEtapa()
-
-    }
-    else
-      setWarn(true)
-      
-
+    if (producto != "") {
+      setDatosEstados((prev: DatosEstados) => {
+        prev.itemABuscar.imagenItem = file;
+        prev.itemABuscar.descripcionItem = producto;
+        return prev;
+      });
+      avanzarEtapa();
+    } else setWarn(true);
   }
 
   return (
-    <div
-      style={{ display: "flex", justifyContent: "center", paddingTop: "32pt" }}
-    >
+    <Container style={{ display: "flex", justifyContent: "center" }}>
       <form>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs={12}>
+            <Typography
+              textAlign="center"
+              style={{
+                color: "#0E182C",
+                fontWeight: "bold",
+                marginTop: "24pt",
+                marginBottom: "16pt",
+              }}
+            >
+              Describa el producto que quiere recibir
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
-              label="Producto"
+              label="Descripcion del Producto*"
               onChange={handleChangePorducto}
               variant="outlined"
               error={warn}
-              helperText={warn?"Este campo es requerido":null}
+              helperText={warn ? "Este campo es requerido" : null}
               fullWidth
             />
           </Grid>
 
           <Grid item xs={12}>
             <MuiFileInput
+              type="file"
               value={file}
-              label="Foto(opc)"
+              label="Imagen del Producto"
               onChange={handleChangeFoto}
               fullWidth
-              //InputProps={accept:"application/png"}
-              inputProps={{accept:"application/png"}}
+              inputProps={{ accept: "image/png, image/gif, image/jpeg" }}
             />
           </Grid>
 
-          <Grid item xs={10}>
+          <Grid item xs={12}>
+            <Typography style={{ color: "lightgray", fontSize: "0.8rem" }}>
+              Los campos con * son obligatorios
+            </Typography>
             <div
               style={{
                 display: "flex",
@@ -73,23 +90,24 @@ const ItemABuscar = ({
                 paddingTop: "48pt",
               }}
             >
-              <Button
-                onClick={validate_prod}
-                variant="contained"
-                style={{
-                  backgroundColor: "#0E182C",
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-                endIcon={<ArrowForwardIcon />}
-              >
-                Siguiente
-              </Button>
+              <ThemeProvider theme={theme}>
+                <Button
+                  onClick={validate_prod}
+                  variant="contained"
+                  style={{
+                    textTransform: "none",
+                    fontWeight: "bold",
+                  }}
+                  endIcon={<ArrowForwardIcon />}
+                >
+                  Siguiente
+                </Button>
+              </ThemeProvider>
             </div>
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 };
 
