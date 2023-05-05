@@ -70,7 +70,6 @@ const ItemABuscar = ({
 
           <Grid item xs={12}>
             <MuiFileInput
-              type="file"
               value={file}
               label="Imagen del Producto"
               onChange={handleChangeFoto}
