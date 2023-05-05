@@ -51,8 +51,11 @@ export const ResumenFinal = ({
   const formaDePago = pasarelaPago.formaDePago === 0 ? 'Efectivo' : 'Tarjeta de Credito';
 
   const now = dayjs();
-  const horaMinimaEnvio = now.add(15, 'minute');
+  const tiempoEstimado = datosEstados.visualizarRecorrido.tiempo? Math.floor(datosEstados.visualizarRecorrido.tiempo / 60) : 15;
+  const horaMinimaEnvio = now.add( tiempoEstimado, 'minute');
   const horaMinimaEnvioFormat: string = horaMinimaEnvio.format('HH:mm');
+  console.log(datosEstados.visualizarRecorrido.tiempo,now, horaMinimaEnvio,horaMinimaEnvioFormat);
+  
 
   const [horaRecepcion, setHoraRecepcion] = useState('1');
   const [time, setTime] = useState(horaMinimaEnvioFormat);
@@ -115,7 +118,7 @@ export const ResumenFinal = ({
             </Avatar>
           </ListItemAvatar>       
           <ListItemText primary="Item a Buscar" secondary={itemABuscar.descripcionItem} />
-          <img src={itemABuscar.imagenItem} alt={itemABuscar.descripcionItem} />
+          <img src={itemABuscar.imagenItem} width={80} height={80} />
         </ListItem>
         <Divider />
         <ListItem>

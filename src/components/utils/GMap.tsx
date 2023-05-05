@@ -10,6 +10,7 @@ interface Ruta {
 interface GMapProps {
   ruta: Ruta;
   setDistancia: any;
+  setTiempo: any;
 }
 
 
@@ -21,7 +22,7 @@ export const dirToString = (toTransform: Direccion) => {
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 
-export const GMap = ({ ruta, setDistancia }: GMapProps) => {
+export const GMap = ({ ruta, setDistancia, setTiempo }: GMapProps) => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -49,6 +50,8 @@ export const GMap = ({ ruta, setDistancia }: GMapProps) => {
     
     setRoute(routeResponse);
     setDistancia(routeResponse?.routes[0].legs[0].distance)
+    setTiempo(routeResponse?.routes[0].legs[0].duration);
+    
   };
 
   useEffect(() => {

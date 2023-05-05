@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { EtapaProps, theme } from "../../RealizarPedido";
+import React, { useEffect, useState } from "react";
+import { DatosEstados, EtapaProps, theme } from "../../RealizarPedido";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { GMap, dirToString } from "@component/components/utils/GMap";
 import {
@@ -16,6 +16,11 @@ interface Distancia {
   value?: number;
 }
 
+interface Tiempo {
+  text?: string;
+  value?: number;
+}
+
 export const VisualizarRecorrido = ({
   datosEstados,
   setDatosEstados,
@@ -24,16 +29,25 @@ export const VisualizarRecorrido = ({
 }: EtapaProps) => {
   const origen = datosEstados.direccionEntrega;
   const destino = datosEstados.direccionComercio;
+  const [precio, setPrecio] = useState<number>(0);
   const [distancia, setDistancia] = useState<Distancia>();
+  const [tiempo, setTiempo] = useState<Tiempo>();
+
+  useEffect(() => {
+    if (distancia?.value) {
+      setPrecio(Math.floor(distancia.value / 100) * 10);
+    }
+  }, [distancia]);
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Grid container justifyContent="center" sx={{ maxWidth: "920px" }}>
         <Grid item xs={12}>
-          <Paper sx={{ marginBottom: "-16pt" }}>
+          <Paper sx={{ marginBottom: "-24pt" }}>
             {etapa === 3 && (
               <GMap
                 ruta={{ dirrecionOrigen: origen, dirrecionDestino: destino }}
                 setDistancia={setDistancia}
+                setTiempo={setTiempo}
               />
             )}
           </Paper>
@@ -42,7 +56,7 @@ export const VisualizarRecorrido = ({
               zIndex: "999",
               position: "relative",
               borderRadius: "36px 36px 0 0",
-              height: "52vh",
+              height: "54vh",
               padding: "12pt",
               paddingRight: "24pt",
             }}
@@ -65,7 +79,7 @@ export const VisualizarRecorrido = ({
                   color: "#b7b7b7",
                   fontWeight: "bold",
                   marginLeft: "10pt",
-                  marginBottom: "8pt",
+                  marginBottom: "6pt",
                 }}
               >
                 Dirrecion de entrega:{" "}
@@ -80,7 +94,7 @@ export const VisualizarRecorrido = ({
                 color: "#b7b7b7",
                 fontWeight: "bold",
                 marginLeft: "10pt",
-                marginBottom: "8pt",
+                marginBottom: "6pt",
               }}
             >
               Dirrecion del comercio:{" "}
@@ -94,7 +108,7 @@ export const VisualizarRecorrido = ({
                 color: "#b7b7b7",
                 fontWeight: "bold",
                 marginLeft: "10pt",
-                marginBottom: "8pt",
+                marginBottom: "6pt",
               }}
             >
               Distancia del recorrido:{" "}
@@ -108,32 +122,56 @@ export const VisualizarRecorrido = ({
                 color: "#b7b7b7",
                 fontWeight: "bold",
                 marginLeft: "10pt",
-                marginBottom: "8pt",
+                marginBottom: "12pt",
               }}
             >
-              Tiempo estimado de entrega:
+              Tiempo estimado de entrega:{" "}
+              <span style={{ color: "#0E182C", float: "right" }}>
+                {tiempo?.text}
+              </span>
             </Typography>
-            <Typography
-              align="left"
+            <div
               style={{
-                color: "#b7b7b7",
-                fontWeight: "bold",
-                marginLeft: "10pt",
-                marginBottom: "8pt",
+                backgroundColor: "#FAF0CA",
+                padding: "12pt",
+                borderRadius: "24pt",
+                textAlign: "center",
+                paddingTop: "10pt",
+                paddingRight: '13pt'
               }}
             >
-              Precio
-            </Typography>
+              <Typography
+                align="left"
+                style={{
+                  color: "#0E182C",
+                  fontWeight: "bold",
+                  marginLeft: "10pt",
+                  fontSize: "1.3rem",
+                }}
+              >
+                Precio:{" "}
+                <span style={{ color: "#0E182C", float: "right" }}>
+                  $ {precio}
+                </span>
+              </Typography>
+            </div>
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "56px",
+                marginTop: "36px",
               }}
             >
               <ThemeProvider theme={theme}>
                 <Button
-                  onClick={avanzarEtapa}
+                  onClick={() => {
+                    setDatosEstados((prev: DatosEstados) => {
+                      prev.visualizarRecorrido.total = precio;
+                      prev.visualizarRecorrido.tiempo = tiempo?.value
+                      return prev;
+                    });
+                    avanzarEtapa();
+                  }}
                   variant="contained"
                   style={{ textTransform: "none", fontWeight: "bold" }}
                   endIcon={<ArrowForwardIcon />}

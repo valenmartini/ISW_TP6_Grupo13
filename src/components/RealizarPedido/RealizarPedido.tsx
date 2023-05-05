@@ -28,6 +28,7 @@ export interface DatosEstados {
   direccionEntrega: Direccion;
   visualizarRecorrido: {
     total?: number;
+    tiempo?: number;
   };
   pasarelaPago: {
     formaDePago?: number;

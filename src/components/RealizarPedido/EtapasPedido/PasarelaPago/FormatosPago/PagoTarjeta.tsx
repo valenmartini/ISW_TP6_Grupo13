@@ -99,7 +99,9 @@ export const PagoTarjeta = ({
             setFechaInvalida(false);
           }
           const fechaActual = new Date();
-          const fechaParseada = new Date(Date.parse(`01/${values.expiry}`));
+          const fechaParseada = new Date(Date.parse(`${fechaSplitted[0]}/01/${fechaSplitted[1]}`));
+          console.log(fechaActual, fechaParseada);
+          
           if (fechaParseada.getTime() < fechaActual.getTime()) {
             setFechaExpirada(true);
             return;

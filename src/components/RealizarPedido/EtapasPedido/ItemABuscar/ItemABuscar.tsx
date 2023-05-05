@@ -21,6 +21,7 @@ const ItemABuscar = ({
   const [warn, setWarn] = React.useState(false);
 
   const handleChangeFoto = (newFile: any) => {
+    
     setFile(newFile);
   };
 
@@ -31,7 +32,7 @@ const ItemABuscar = ({
   function validate_prod() {
     if (producto != "") {
       setDatosEstados((prev: DatosEstados) => {
-        prev.itemABuscar.imagenItem = file;
+        prev.itemABuscar.imagenItem = URL.createObjectURL(file);
         prev.itemABuscar.descripcionItem = producto;
         return prev;
       });
