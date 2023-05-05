@@ -48,7 +48,7 @@ export const ResumenFinal = ({
   const direccionComercioCompleta = direccionComercio.calle && direccionComercio.numero ? direccionComercio.calle + " " +  direccionComercio.numero : "";
   const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + " " + direccionEntrega.numero : "";
   const numeroTarjetaCodificado = pasarelaPago.datosTarjeta?.numeroTarjeta ? 'XXXX-XXXX-XXXX-' + pasarelaPago.datosTarjeta?.numeroTarjeta.slice(-4) : '';
-  const formaDePago = pasarelaPago.formaDePago === "0" ? 'Efectivo' : 'Tarjeta de Credito';
+  const formaDePago = pasarelaPago.formaDePago === 0 ? 'Efectivo' : 'Tarjeta de Credito';
 
   const now = dayjs();
   const horaMinimaEnvio = now.add(15, 'minute');
@@ -160,7 +160,7 @@ export const ResumenFinal = ({
           <ListItemText primary="Forma de Pago" secondary={formaDePago} />
         </ListItem>
         <Divider />
-        {pasarelaPago.formaDePago === "0" && (
+        {pasarelaPago.formaDePago === 0 && (
           <React.Fragment>
             <Divider />
             <ListItem>
@@ -174,7 +174,7 @@ export const ResumenFinal = ({
             <Divider />
           </React.Fragment>
         )}
-        {pasarelaPago.formaDePago === "1" && (
+        {pasarelaPago.formaDePago === 1 && (
           <React.Fragment>
             <Divider />
             <ListItem>
