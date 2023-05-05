@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
 import { EtapaProps } from '../../RealizarPedido'
-
-// export const ResumenFinal = (props: EtapaProps) => {
-//   const { itemABuscar, direccionComercio, direccionEntrega, pasarelaPago, visualizarRecorrido } = props.datosEstados
-  
-//   return (
-//     <div>ResumenFinal</div>
-//   )
-// }
+import dayjs from 'dayjs';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -44,19 +37,18 @@ export const ResumenFinal = (props: EtapaProps) => {
   const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + " " + direccionEntrega.numero : "";
   const numeroTarjetaCodificado = pasarelaPago.datosTarjeta?.numeroTarjeta ? 'XXXX-XXXX-XXXX-' + pasarelaPago.datosTarjeta?.numeroTarjeta.slice(-4) : '';
 
-  const now = new Date();
-  const hours = now.getHours();
-  const minutes = now.getMinutes();
-  const horaActual = hours.toString() + ':' + minutes.toString();
+  const now = dayjs();
+  const horaMinimaEnvio = now.add(15, 'minute');
+  const horaMinimaEnvioFormat = now.add(15, 'minute').format('HH:mm');
 
   const [horaRecepcion, setHoraRecepcion] = useState('1');
-  const [time, setTime] = useState(sumarHora(horaActual, 15));
+  const [time, setTime] = useState(horaMinimaEnvioFormat);
   const [readOnly, setReadOnly] = useState(true);
 
   const handleChange = (event: SelectChangeEvent) => {
     setHoraRecepcion(event.target.value as string);
     if (horaRecepcion === '2') {
-      setTime(sumarHora(horaActual, 15));
+      setTime(horaMinimaEnvioFormat);
       setReadOnly(true);
     } else {
       setReadOnly(false);
@@ -66,21 +58,6 @@ export const ResumenFinal = (props: EtapaProps) => {
   const handleChange2 = (event: any) => {
     setTime(event.target.value);
   };
-
-  function sumarHora(hora: string, minutosASumar: number) {
-    let horas: number = parseInt(hora.slice(0,2));
-    let minutos: number = parseInt(hora.slice(-2));
-
-    let minutosFinal: number | string= minutos + minutosASumar >= 60 ? (minutos + minutosASumar - 60) : (minutos + minutosASumar);
-    let horasFinal: number | string = minutos + minutosASumar >= 60 ? (horas+1) : (horas);
-    
-    horasFinal = horasFinal < 10 ? "0" + horasFinal : horasFinal;
-    minutosFinal = minutosFinal < 10 ? "0" + minutosFinal : minutosFinal;
-
-    let resultado: string = horasFinal + ":" + minutosFinal;
-
-    return resultado
-  }
 
   return (
     <List sx={style} component="nav" aria-label="mailbox folders">
