@@ -10,6 +10,7 @@ import { PasarelaPago } from "./EtapasPedido/PasarelaPago/PasarelaPago";
 import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
+import PedidoRegistrado from "./EtapasPedido/ResumenFinal/PedidoRegistrado";
 
 
 export interface Direccion {
@@ -80,7 +81,7 @@ export const RealizarPedido = () => {
   });
 
   const avanzarEtapa = () => {
-    if (etapaActual < 6) {
+    if (etapaActual < 7) {
       setEtapaActual(etapaActual + 1);
       setReverse(false);
     }
@@ -165,6 +166,16 @@ export const RealizarPedido = () => {
         />
       ),
     },
+    {
+      idEtapa: 7,
+      componente: (
+        <PedidoRegistrado
+          datosEstados={datosEstados}
+          setDatosEstados={setDatosEstados}
+          avanzarEtapa={avanzarEtapa}
+        />
+      ),
+    },
   ];
 
   return (
@@ -175,7 +186,7 @@ export const RealizarPedido = () => {
       <ThemeProvider theme={theme}>
         <LinearProgress
           variant="determinate"
-          value={(etapaActual / 6) * 100}
+          value={(etapaActual / 7) * 100}
           color="primary"
         />
       </ThemeProvider>
