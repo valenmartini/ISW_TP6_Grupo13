@@ -32,7 +32,7 @@ const ItemABuscar = ({
   function validate_prod() {
     if (producto != "") {
       setDatosEstados((prev: DatosEstados) => {
-        prev.itemABuscar.imagenItem = URL.createObjectURL(file);
+        prev.itemABuscar.imagenItem = file? URL.createObjectURL(file): null;
         prev.itemABuscar.descripcionItem = producto;
         return prev;
       });

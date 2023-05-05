@@ -23,17 +23,22 @@ import {
 import * as Yup from "yup";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const validationSchema = Yup.object().shape({
-  montoEfectivo: Yup.number()
-    .min(1, "El minimo es de 1 peso").max(20000, "El maximo permitido es de 20.000 pesos")
-    .required("Campo requerido"),
-});
-
 export const PagoEfectivo = ({
   datosEstados,
   setDatosEstados,
   avanzarEtapa,
 }: EtapaProps) => {
+  const validationSchema = Yup.object().shape({
+    montoEfectivo: Yup.number()
+      .min(
+        datosEstados.visualizarRecorrido.total || 1,
+        `El minimo es de ${datosEstados.visualizarRecorrido.total || 1} peso${
+          datosEstados.visualizarRecorrido.total ? "s" : ""
+        }`
+      )
+      .max(20000, "El maximo permitido es de 20.000 pesos")
+      .required("Campo requerido"),
+  });
   return (
     <Formik
       validationSchema={validationSchema}
@@ -66,36 +71,39 @@ export const PagoEfectivo = ({
               justifyContent: "center",
             }}
           >
-            <Grid
-              container
-              spacing={3}
-              sx={{ maxWidth: "500px" }}
-            >
+            <Grid container spacing={3} sx={{ maxWidth: "500px" }}>
               <Grid item xs={12}>
-              <Typography
-              textAlign="center"
-              style={{
-                color: "#0E182C",
-                fontWeight: "bold",
-                marginTop: "16pt",
-                marginBottom: "16pt",
-              }}
-            >
+                <Typography
+                  textAlign="center"
+                  style={{
+                    color: "#0E182C",
+                    fontWeight: "bold",
+                    marginTop: "16pt",
+                    marginBottom: "16pt",
+                  }}
+                >
                   Indicale al repartidor con cuanto vas a pagar
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth style={{ marginTop: "12pt" }}>
-                  <InputLabel htmlFor="cantidad-cash" error={touched.montoEfectivo && Boolean(errors.montoEfectivo)}>
+                  <InputLabel
+                    htmlFor="cantidad-cash"
+                    error={
+                      touched.montoEfectivo && Boolean(errors.montoEfectivo)
+                    }
+                  >
                     Cantidad en efectivo*
                   </InputLabel>
                   <OutlinedInput
                     id="cantidad-cash"
                     name="montoEfectivo"
                     label="Cantidad en efectivo"
-                    error={touched.montoEfectivo && Boolean(errors.montoEfectivo)}
+                    error={
+                      touched.montoEfectivo && Boolean(errors.montoEfectivo)
+                    }
                     inputProps={{
-                      inputMode:"numeric"
+                      inputMode: "numeric",
                     }}
                     onChange={(e) => {
                       e.target.value = e.target.value.replace(/\D/g, "");
@@ -105,9 +113,15 @@ export const PagoEfectivo = ({
                       <InputAdornment position="start">$</InputAdornment>
                     }
                   />
-                  {touched.montoEfectivo && (<FormHelperText error>{errors.montoEfectivo}</FormHelperText>)}
+                  {touched.montoEfectivo && (
+                    <FormHelperText error>
+                      {errors.montoEfectivo}
+                    </FormHelperText>
+                  )}
                 </FormControl>
-                <Typography style={{color:'lightgray', fontSize: '0.8rem'}}>Los campos con * son obligatorios</Typography>
+                <Typography style={{ color: "lightgray", fontSize: "0.8rem" }}>
+                  Los campos con * son obligatorios
+                </Typography>
               </Grid>
               <Grid
                 item

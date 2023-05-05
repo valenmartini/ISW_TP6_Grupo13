@@ -112,7 +112,7 @@ export const ResumenFinal = ({
     if (diaDayjs.isSame(diaActual) || diaDayjs.isAfter(diaActual)) {
       setError('');
     } else {
-      setError('La hora de envio debe ser posterior a 15 minutos desde la realizacion del pedido');
+      setError('La hora de envio debe ser posterior a la hora de realizacion del pedido');
     }
   }
 
@@ -124,7 +124,7 @@ export const ResumenFinal = ({
     if (horaDayjs.isAfter(horaMinimaEnvio)) {
       setError('');
     } else {
-      setError('La hora de envio debe ser posterior a 15 minutos desde la realizacion del pedido');
+      setError('La hora de envio debe ser posterior a la hora de la realizacion del pedido');
     }
   }
 
