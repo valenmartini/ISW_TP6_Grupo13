@@ -11,7 +11,6 @@ import { ResumenFinal } from "./EtapasPedido/ResumenFinal/ResumenFinal";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormatoPago } from "./EtapasPedido/FormatoPago/FormatoPago";
 
-
 export interface Direccion {
   calle?: string;
   numero?: number;
@@ -223,24 +222,6 @@ export const RealizarPedido = () => {
             </div>
           );
         })}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          paddingTop: "48pt",
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <Button
-            onClick={avanzarEtapa}
-            variant="contained"
-            style={{ textTransform: "none", fontWeight: "bold" }}
-            endIcon={<ArrowForwardIcon />}
-          >
-            Siguiente
-          </Button>
-        </ThemeProvider>
       </div>
     </>
   );
