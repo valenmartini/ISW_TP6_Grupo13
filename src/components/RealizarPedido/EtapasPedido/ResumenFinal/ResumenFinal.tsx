@@ -54,14 +54,18 @@ export const ResumenFinal = ({
   const horaMinimaEnvio = now.add(15, 'minute');
   const horaMinimaEnvioFormat: string = horaMinimaEnvio.format('HH:mm');
 
+  const diaActual = now.format('YYYY-MM-DD')
+
   const [horaRecepcion, setHoraRecepcion] = useState('1');
   const [time, setTime] = useState(horaMinimaEnvioFormat);
+  const [date, setDate] = useState(diaActual);
   const [readOnly, setReadOnly] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (horaRecepcion === '1') {
       setTime(horaMinimaEnvioFormat);
+      setDate(diaActual);
       setReadOnly(true);
       setError('');
     } else {
@@ -73,6 +77,7 @@ export const ResumenFinal = ({
     setHoraRecepcion(event.target.value as string);
     if (horaRecepcion === '1') {
       setTime(horaMinimaEnvioFormat);
+      setDate(diaActual);
       setReadOnly(true);
       setError('');
     } else {
@@ -81,9 +86,32 @@ export const ResumenFinal = ({
   };
 
   const handleChange2 = (event: any) => {
+    setDate(event.target.value);
+    validateDate(event.target.value);
+    if ((dayjs(event.target.value, 'YYYY-MM-DD').isSame(diaActual))) {
+      validateTime(time);
+    }
+  };
+
+  const handleChange3 = (event: any) => {
     setTime(event.target.value);
     validateTime(event.target.value);
+    if (dayjs(date, 'YYYY-MM-DD').isAfter(diaActual)) {
+      setError('');
+    }
   };
+
+  const validateDate = (date: string) => {
+    const dateString = date;
+
+    const diaDayjs = dayjs(dateString, 'YYYY-MM-DD');
+
+    if (diaDayjs.isSame(diaActual) || diaDayjs.isAfter(diaActual)) {
+      setError('');
+    } else {
+      setError('La hora de envio debe ser posterior a 15 minutos desde la realizacion del pedido');
+    }
+  }
 
   const validateTime= (time: string) => {
     const timeString = time;
@@ -212,10 +240,19 @@ export const ResumenFinal = ({
           <FormControl fullWidth>
             <InputLabel>Hora de Envio</InputLabel>
             <Input
+              type="date"
+              value={date}
+              readOnly={readOnly}
+              onChange={handleChange2}
+            />
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel>Dia de Envio</InputLabel>
+            <Input
               type="time"
               value={time}
               readOnly={readOnly}
-              onChange={handleChange2}
+              onChange={handleChange3}
             />
           </FormControl>
         </ListItem>
