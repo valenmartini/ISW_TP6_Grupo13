@@ -27,8 +27,8 @@ export const VisualizarRecorrido = ({
   avanzarEtapa,
   etapa,
 }: EtapaProps) => {
-  const origen = datosEstados.direccionEntrega;
-  const destino = datosEstados.direccionComercio;
+  const destino = datosEstados.direccionEntrega;
+  const origen = datosEstados.direccionComercio;
   const [precio, setPrecio] = useState<number>(0);
   const [distancia, setDistancia] = useState<Distancia>();
   const [tiempo, setTiempo] = useState<Tiempo>();
