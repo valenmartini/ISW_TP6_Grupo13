@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { EtapaProps, theme } from '../../RealizarPedido'
 import dayjs from 'dayjs';
 import * as Yup from 'yup';
@@ -38,8 +38,12 @@ const style = {
   bgcolor: 'background.paper',
 };
 
-export const ResumenFinal = (props: EtapaProps) => {
-  const { itemABuscar, direccionComercio, direccionEntrega, pasarelaPago, visualizarRecorrido, resumenFinal } = props.datosEstados
+export const ResumenFinal = ({
+  datosEstados,
+  setDatosEstados,
+  avanzarEtapa,
+}: EtapaProps) => {
+  const { itemABuscar, direccionComercio, direccionEntrega, pasarelaPago, visualizarRecorrido, resumenFinal } = datosEstados
 
   const direccionComercioCompleta = direccionComercio.calle && direccionComercio.numero ? direccionComercio.calle + " " +  direccionComercio.numero : "";
   const direccionEntregaCompleta = direccionEntrega.calle && direccionEntrega.numero ? direccionEntrega.calle + " " + direccionEntrega.numero : "";
@@ -55,9 +59,19 @@ export const ResumenFinal = (props: EtapaProps) => {
   const [readOnly, setReadOnly] = useState(true);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (horaRecepcion === '1') {
+      setTime(horaMinimaEnvioFormat);
+      setReadOnly(true);
+      setError('');
+    } else {
+      setReadOnly(false);
+    }
+  }, [horaRecepcion]);
+
   const handleChange = (event: SelectChangeEvent) => {
     setHoraRecepcion(event.target.value as string);
-    if (horaRecepcion === '2') {
+    if (horaRecepcion === '1') {
       setTime(horaMinimaEnvioFormat);
       setReadOnly(true);
       setError('');
@@ -68,9 +82,12 @@ export const ResumenFinal = (props: EtapaProps) => {
 
   const handleChange2 = (event: any) => {
     setTime(event.target.value);
-    console.log(time);
-    
-    const [hora, minuto] = time.split(':');
+    validateTime(event.target.value);
+  };
+
+  const validateTime= (time: string) => {
+    const timeString = time;
+    const [hora, minuto] = timeString.split(':');
     const horaDayjs = dayjs().set('hour', Number(hora)).set('minute', Number(minuto));
 
     if (horaDayjs.isAfter(horaMinimaEnvio)) {
@@ -78,11 +95,14 @@ export const ResumenFinal = (props: EtapaProps) => {
     } else {
       setError('La hora de envio debe ser posterior a 15 minutos desde la realizacion del pedido');
     }
-  };
+  }
 
   const handleSubmit = (event: any) => {
-    resumenFinal.horaEnvio = time;
-    props.avanzarEtapa();
+    if (error === '') {
+      console.log(itemABuscar.imagenItem);
+      resumenFinal.horaEnvio = time;
+      avanzarEtapa();
+    }
   }
 
   return (
@@ -95,6 +115,7 @@ export const ResumenFinal = (props: EtapaProps) => {
             </Avatar>
           </ListItemAvatar>       
           <ListItemText primary="Item a Buscar" secondary={itemABuscar.descripcionItem} />
+          <img src={itemABuscar.imagenItem} alt={itemABuscar.descripcionItem} />
         </ListItem>
         <Divider />
         <ListItem>
@@ -178,7 +199,7 @@ export const ResumenFinal = (props: EtapaProps) => {
           <FormControl fullWidth>
             <InputLabel>Hora de Envio</InputLabel>
             <Select
-              value={horaRecepcion ? horaRecepcion.toString() : '2'}
+              value={horaRecepcion ? horaRecepcion.toString() : '1'}
               label="Hora de Envio"
               onChange={handleChange}
             >
@@ -198,7 +219,7 @@ export const ResumenFinal = (props: EtapaProps) => {
             />
           </FormControl>
         </ListItem>
-        {error !== '' && <Typography color="error">{error}</Typography>}
+        {error !== '' && <Typography sx={{ padding: "15px" }} color="error">{error}</Typography>}
       </List>
       <Grid
         item
